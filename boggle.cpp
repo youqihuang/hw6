@@ -95,5 +95,41 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 								   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc)
 {
 //add your solution here!
-
+	if (r == board.size()) {
+		if (dict.find(word) != dict.end()){
+			std::cout << word << " inserted at end of row" << std::endl;
+			result.insert(word);
+			return true;
+		} 
+		return false;
+	} 
+	if (c == board.size()) {
+		if (dict.find(word) != dict.end()){
+			std::cout << word << " inserted at end of col" << std::endl;
+			result.insert(word);
+			return true;
+		} 
+		return false;
+	}
+	std::string newWord = word + board[r][c];
+	std::string temp = word;
+	word = newWord;
+	std::cout << word << std::endl;
+	if (prefix.find(word) != prefix.end()) {
+		bool status  = boggleHelper(dict, prefix, board, word, result, r+dr, c+dc, dr, dc);
+		if (status) {
+			return true; 
+		} 
+	} else if (dict.find(word) != dict.end()) {
+		std::cout << word << " inserted because it is not a prefix" << std::endl;
+		result.insert(word);
+		return true;
+	}
+	word = temp;
+	if (dict.find(word) != dict.end()){
+		std::cout << word << " inserted when extended word fails" << std::endl;
+		result.insert(word);
+		return true;
+	}
+	return false;
 }
